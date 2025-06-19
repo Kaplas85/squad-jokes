@@ -4,14 +4,14 @@ function getLCM(req, res) {
   try {
     const { numbers } = req.query;
     if (!numbers) {
-      return res.status(422).json({ error: "Falta el parámetro 'numbers'" });
+      return res.status(422).json({ error: "'numbers' params missing" });
     }
 
     const nums = String(numbers)
       .split(",")
       .map((x) => {
         const v = parseInt(x, 10);
-        if (isNaN(v)) throw new Error(`'${x}' no es un entero válido`);
+        if (isNaN(v)) throw new Error(`'${x}' is not a valid integer`);
         return v;
       });
 
@@ -26,13 +26,13 @@ function incrementNumber(req, res) {
   try {
     const { number } = req.query;
     if (number === undefined) {
-      return res.status(422).json({ error: "Falta el parámetro 'number'" });
+      return res.status(422).json({ error: "'numbers' params missing" });
     }
     const n = parseInt(number, 10);
     if (isNaN(n)) {
       return res
         .status(422)
-        .json({ error: `'${number}' no es un entero válido` });
+        .json({ error: `'${number}' is not a valid integer` });
     }
 
     const result = increment(n);

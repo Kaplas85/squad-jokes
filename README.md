@@ -89,6 +89,7 @@ npm run tests
 - `GET /jokes` — Fetch a random joke (from Chuck Norris or Dad jokes)
 - `GET /jokes?source=chuck` — Fetch a Chuck Norris joke
 - `GET /jokes?source=dad` — Fetch a Dad joke
+- `GET /jokes/emparejados` — Fetch 5 Chuck Norris and 5 Dad jokes, paired creatively
 - `POST /jokes` — Save a new joke (`{ joke: "text" }`)
 - `PUT /jokes/:id` — Update a joke by ID (`{ joke: "new text" }`)
 - `DELETE /jokes/:id` — Delete a joke by ID

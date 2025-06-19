@@ -5,10 +5,12 @@ const {
   updateSingleJoke,
   deleteSingleJoke,
 } = require("../controllers/jokes");
+const { getPairedJokesController } = require("../controllers/pairedJokes");
 
 router.get("/", getJokesFromExternal);
 router.post("/", createNewJoke);
 router.put("/:id", updateSingleJoke);
 router.delete("/:id", deleteSingleJoke);
+router.get("/emparejados", getPairedJokesController);
 
 module.exports = router;
