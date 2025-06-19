@@ -17,7 +17,7 @@ paths:
             enum: [chuck, dad]
           description: Source of the joke (chuck or dad). If omitted, random.
       responses:
-        '200':
+        "200":
           description: Joke fetched successfully
           content:
             application/json:
@@ -28,7 +28,7 @@ paths:
                     type: string
                   from:
                     type: string
-        '422':
+        "422":
           description: Invalid source or error fetching joke
           content:
             application/json:
@@ -50,7 +50,7 @@ paths:
                   type: string
               required: [joke]
       responses:
-        '201':
+        "201":
           description: Joke saved successfully
           content:
             application/json:
@@ -63,8 +63,40 @@ paths:
                       type: integer
                     text:
                       type: string
-        '422':
+        "422":
           description: Joke text missing or error saving
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /jokes/emparejados:
+    get:
+      summary: Get 5 paired Chuck Norris and Dad jokes
+      description: Fetches 5 jokes from each external API in parallel, pairs them, and returns a creative combination.
+      responses:
+        "200":
+          description: Array of paired jokes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    chuck:
+                      type: string
+                      description: Chuck Norris joke
+                    dad:
+                      type: string
+                      description: Dad joke
+                    combinado:
+                      type: string
+                      description: Creative combination of both jokes
+        "422":
+          description: Error fetching jokes from external APIs
           content:
             application/json:
               schema:
@@ -92,7 +124,7 @@ paths:
                   type: string
               required: [joke]
       responses:
-        '200':
+        "200":
           description: Joke updated successfully
           content:
             application/json:
@@ -101,7 +133,7 @@ paths:
                 properties:
                   message:
                     type: string
-        '404':
+        "404":
           description: Joke not found
           content:
             application/json:
@@ -119,9 +151,9 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Joke deleted successfully
-        '404':
+        "404":
           description: Joke not found
           content:
             application/json:
@@ -141,7 +173,7 @@ paths:
             type: string
           description: Comma-separated list of integers (e.g., 2,3,5)
       responses:
-        '200':
+        "200":
           description: LCM calculated successfully
           content:
             application/json:
@@ -150,7 +182,7 @@ paths:
                 properties:
                   lcm:
                     type: integer
-        '422':
+        "422":
           description: Invalid input
           content:
             application/json:
@@ -170,7 +202,7 @@ paths:
             type: string
           description: Integer to increment
       responses:
-        '200':
+        "200":
           description: Number incremented successfully
           content:
             application/json:
@@ -179,7 +211,7 @@ paths:
                 properties:
                   result:
                     type: integer
-        '422':
+        "422":
           description: Invalid input
           content:
             application/json:

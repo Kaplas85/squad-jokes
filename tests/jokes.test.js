@@ -81,4 +81,16 @@ describe("Jokes API", () => {
     const res = await request(app).delete("/jokes/999");
     expect(res.statusCode).toBe(404);
   });
+
+  test("Get Combined Jokes", async () => {
+    const res = await request(app).get("/jokes/emparejados");
+    expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+
+    const itemSample = res.body[0];
+    expect(itemSample).toHaveProperty("chuck");
+    expect(itemSample).toHaveProperty("dad");
+    expect(itemSample).toHaveProperty("combinado");
+  });
 });
