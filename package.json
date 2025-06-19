@@ -1,0 +1,21 @@
+{
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "up": "node src/index.js",
+    "tests": "jest"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.9",
+    "axios": "^1.10.0",
+    "drizzle-orm": "^0.44.2",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.1",
+    "jest": "^30.0.0",
+    "superagent": "^10.2.1",
+    "supertest": "^7.1.1"
+  }
+}
