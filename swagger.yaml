@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: Squad Jokes API
+  version: 1.0.0
+  description: REST API for fetching, saving, updating, and deleting jokes, as well as basic math operations.
+servers:
+  - url: http://localhost:8000
+paths:
+  /jokes:
+    get:
+      summary: Get a random joke from an external API
+      parameters:
+        - in: query
+          name: source
+          schema:
+            type: string
+            enum: [chuck, dad]
+          description: Source of the joke (chuck or dad). If omitted, random.
+      responses:
+        '200':
+          description: Joke fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  joke:
+                    type: string
+                  from:
+                    type: string
+        '422':
+          description: Invalid source or error fetching joke
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    post:
+      summary: Save a new joke to the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                joke:
+                  type: string
+              required: [joke]
+      responses:
+        '201':
+          description: Joke saved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    text:
+                      type: string
+        '422':
+          description: Joke text missing or error saving
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /jokes/{id}:
+    put:
+      summary: Update a joke by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                joke:
+                  type: string
+              required: [joke]
+      responses:
+        '200':
+          description: Joke updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Joke not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    delete:
+      summary: Delete a joke by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Joke deleted successfully
+        '404':
+          description: Joke not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /math/lcm:
+    get:
+      summary: Calculate the Least Common Multiple (LCM) of numbers
+      parameters:
+        - in: query
+          name: numbers
+          required: true
+          schema:
+            type: string
+          description: Comma-separated list of integers (e.g., 2,3,5)
+      responses:
+        '200':
+          description: LCM calculated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lcm:
+                    type: integer
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /math/increment:
+    get:
+      summary: Increment a number by 1
+      parameters:
+        - in: query
+          name: number
+          required: true
+          schema:
+            type: string
+          description: Integer to increment
+      responses:
+        '200':
+          description: Number incremented successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: integer
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
