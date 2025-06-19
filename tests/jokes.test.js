@@ -74,7 +74,6 @@ describe("Jokes API", () => {
       .returning();
 
     const res = await request(app).delete(`/jokes/${item[0].id}`);
-    console.log(res.body);
     expect(res.statusCode).toBe(204);
   });
 
