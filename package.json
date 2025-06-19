@@ -3,14 +3,17 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "up": "node src/index.js",
+    "dev": "node ./src/index.js",
+    "db:migrate": "drizzle-kit migrate",
+    "db:generate": "drizzle-kit generate",
     "tests": "jest"
   },
   "dependencies": {
     "@libsql/client": "^0.15.9",
     "axios": "^1.10.0",
     "drizzle-orm": "^0.44.2",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "pg": "^8.16.1"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.1",
