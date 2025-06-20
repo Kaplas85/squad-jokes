@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Squad Jokes API
   version: 1.0.0
-  description: REST API for fetching, saving, updating, and deleting jokes, as well as basic math operations.
+  description: REST API for fetching, saving, updating, and deleting jokes, as well as basic math operations, notifications, and authentication.
 servers:
   - url: http://localhost:8000
 paths:
@@ -220,3 +220,198 @@ paths:
                 properties:
                   error:
                     type: string
+  /notifications:
+    post:
+      summary: Send a notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient:
+                  type: string
+                message:
+                  type: string
+              required: [recipient, message]
+      responses:
+        "200":
+          description: Notification sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        "400":
+          description: Missing recipient or message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /auth/login:
+    post:
+      summary: Login with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required: [email, password]
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "400":
+          description: Missing email or password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/usuario:
+    get:
+      summary: Access user-protected route
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User access granted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    type: object
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/admin:
+    get:
+      summary: Access admin-protected route
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Admin access granted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    type: object
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /oauth/external/google:
+    get:
+      summary: Start Google OAuth2 login
+      responses:
+        "302":
+          description: Redirect to Google login
+  /oauth/external/google/redirect:
+    get:
+      summary: Google OAuth2 callback
+      responses:
+        "302":
+          description: Redirect to external callback
+  /auth/external/callback:
+    get:
+      summary: Handle external login callback
+      parameters:
+        - in: query
+          name: profile
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: External login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "400":
+          description: Missing profile
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

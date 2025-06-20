@@ -7,23 +7,10 @@ A simple Node.js REST API for fetching, saving, updating, and deleting jokes, as
 - Fetch random jokes from external APIs (Chuck Norris and Dad jokes)
 - CRUD operations for jokes stored in a PostgreSQL database
 - Math utilities: Least Common Multiple (LCM) and increment operations
+- Notifications via email or SMS
+- OAuth2 authentication with Google
 - RESTful endpoints
 - Docker and Docker Compose support
-
-## Project Structure
-
-```
-src/
-  controllers/   # Route handlers for jokes and math
-  db/            # Database connection and schema
-  routes/        # Express route definitions
-  services/      # Business logic for jokes and math
-  index.js       # App entrypoint
-  server.js      # Express app setup
-tests/           # Jest + Supertest API tests
-drizzle/         # Drizzle ORM migrations and metadata
-data/            # Database data (for Docker volume)
-```
 
 ## Requirements
 
@@ -64,7 +51,10 @@ yarn db:migrate
 npm run db:migrate
 ```
 
-### 5. Start the server
+### 5. Configure Google Credentials
+It is important to use a Google ClientID and ClientSecret to make OAuth endpoints work.
+
+### 6. Start the server
 
 ```sh
 yarn dev
@@ -74,12 +64,12 @@ npm run dev
 
 The API will be available at [http://localhost:8000](http://localhost:8000).
 
-### 6. Run tests
+### 7. Run tests
 
 ```sh
-yarn tests
+yarn test
 # or
-npm run tests
+npm run test
 ```
 
 ## API Endpoints
@@ -99,6 +89,19 @@ npm run tests
 - `GET /math/lcm?numbers=2,3,5` — Calculate the LCM of numbers
 - `GET /math/increment?number=41` — Increment a number
 
+### Notifications
+
+- `POST /notifications` — Send a notification (`{ recipient: "email_or_phone", message: "text" }`)
+
+### Authentication
+
+- `POST /auth/login` — Login with email and password (`{ email, password }`)
+- `GET /api/usuario` — Access user-protected route
+- `GET /api/admin` — Access admin-protected route
+- `GET /oauth/external/google` — Start Google OAuth2 login
+- `GET /oauth/external/google/redirect` — Google OAuth2 callback
+- `GET /auth/external/callback` — Handle external login callback
+
 ## Development with Docker
 
 You can run the API and database using Docker Compose:
@@ -109,3 +112,12 @@ docker compose up
 
 This will start both the API and a PostgreSQL database.
 
+## Testing
+
+Run the tests to ensure everything is working correctly:
+
+```sh
+yarn test
+# or
+npm run test
+```
