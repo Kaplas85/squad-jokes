@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { login } = require("../services/auth");
 const config = require("../config");
+const { getExternalUser } = require("../services/externalUsers");
 
 function signIn(req, res) {
   const { email, password } = req.body;
@@ -13,6 +14,22 @@ function signIn(req, res) {
 
   if (token.result !== "success") {
     return res.status(401).json({ error: token.result });
+  }
+
+  res.json({ token });
+}
+
+function externalSignIn(req, res) {
+  const { profile } = req.query;
+
+  if (!profile) {
+    return res.status(400).json({ error: "profile required" });
+  }
+
+  const token = getExternalUser(profile);
+
+  if (!token) {
+    return res.status(404).json({ error: "user not found" });
   }
 
   res.json({ token });
@@ -38,4 +55,4 @@ function authMiddleware(requiredRole) {
   };
 }
 
-module.exports = { signIn, authMiddleware };
+module.exports = { signIn, authMiddleware, externalSignIn };
