@@ -22,7 +22,12 @@ router.get(
   }
 );
 
-router.get("/oauth/external/google", passport.authenticate("google"));
+router.get(
+  "/oauth/external/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
 
 router.get(
   "/oauth/external/google/redirect",
