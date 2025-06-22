@@ -1,0 +1,36 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-api-tests:
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: squadjokes
+        ports:
+          - 5432:5432
+
+    runs-on: node:22
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/squadjokes
+      SECRET_KEY: f2d0078191f67940255cff2e5e500ab8e8f9e6ae2d0cdbd813a3ef4368804078
+      GOOGLE_CLIENT_ID: test-client-id.apps.googleusercontent.com
+      GOOGLE_CLIENT_SECRET: test-client-secret
+      NOTIFIER_METHOD: email
+
+    steps:
+      - uses: actions/checkout@v3
+        name: Get directory
+
+      - name: Migrate database
+        run: |
+          yarn db:migrate
+
+      - name: Run API tests
+        run: |
+          yarn tests
