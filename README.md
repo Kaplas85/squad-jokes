@@ -18,60 +18,6 @@ A simple Node.js REST API for fetching, saving, updating, and deleting jokes, as
 - PostgreSQL (local or via Docker)
 - Yarn or npm
 
-## Getting Started
-
-### 1. Clone the repository
-
-```sh
-git clone <repo-url>
-cd squad-jokes
-```
-
-### 2. Install dependencies
-
-```sh
-yarn
-# or
-npm install
-```
-
-### 3. Configure the database
-
-Set the `DATABASE_URL` environment variable. Example for local development:
-
-```
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/squadjokes
-```
-
-### 4. Run database migrations
-
-```sh
-yarn db:migrate
-# or
-npm run db:migrate
-```
-
-### 5. Configure Google Credentials
-It is important to use a Google ClientID and ClientSecret to make OAuth endpoints work.
-
-### 6. Start the server
-
-```sh
-yarn dev
-# or
-npm run dev
-```
-
-The API will be available at [http://localhost:8000](http://localhost:8000).
-
-### 7. Run tests
-
-```sh
-yarn test
-# or
-npm run test
-```
-
 ## API Endpoints
 
 ### Jokes
@@ -102,22 +48,105 @@ npm run test
 - `GET /oauth/external/google/redirect` — Google OAuth2 callback
 - `GET /auth/external/callback` — Handle external login callback
 
-## Development with Docker
 
-You can run the API and database using Docker Compose:
 
-```sh
-docker compose up
+## Before you begin
+
+For this step, it's important to obtain your Client ID and Client Secret from your Google Cloud account. You can use your own credentials by creating them if you don't have them using the [following tutorial.](https://www.youtube.com/watch?v=tgO_ADSvY1I)
+
+When creating your credentials, you'll need an Authorized Origin URL and an Authorized Redirect URI.
+
+- Authorized Origin: http://localhost:8000
+- Authorized Redirect URI: http://localhost:8000/oauth/external/google/redirect
+
+If you don't want to create credentials, they will be shared privately for testing and use.
+
+It's important to note that without these credentials, OAuth endpoints won't work.
+
+### Add credentials
+To launch the container, it's important to use the credentials correctly. To do this, you can go to the [compose.yml](./compose.yml) file and change the API service's environment variables.
+```yml
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/squadjokes
+      - SECRET_KEY=f2d0078191f67940255cff2e5e500ab8e8f9e6ae2d0cdbd813a3ef4368804078
+      - GOOGLE_CLIENT_ID=<insert-here> # Change this
+      - GOOGLE_CLIENT_SECRET=<insert-here> # Change this
+      - NOTIFIER_METHOD=email
+    depends_on:
+      - db
+    volumes:
+      - .:/opt/app
+    command: yarn dev
 ```
 
-This will start both the API and a PostgreSQL database.
+## Getting Started with Docker and Docker Compose
 
-## Testing
-
-Run the tests to ensure everything is working correctly:
+### 1. Clone the repository
 
 ```sh
-yarn test
+git clone <repo-url>
+cd squad-jokes
+```
+
+### 2. Build the containers
+```sh
+docker compose build
+```
+
+### 3. Start the server
+
+```sh
+docker compose up -d
+```
+
+### 4. Run migrations
+
+```sh
+docker compose exec api yarn db:migrate
+```
+
+The API will be available at [http://localhost:8000](http://localhost:8000).
+
+### 7. Run tests
+
+```sh
+docker compose exec api yarn tests
+```
+
+## Getting Started Local
+If you want to launch the project without using Docker, you will need to make some modifications first.
+
+### 1. Set environment variables
+You'll need to rename the `.env.example` file to `.env`. Inside this file, you'll need to set all the variables for the project to work.
+
+Make sure you have a Postgres database to connect to.
+
+### 2. Apply migrations
+```sh
+yarn db:migrate
 # or
-npm run test
+npm run db:migrate
 ```
+
+### 3. Up the server
+```sh
+yarn dev:local
+# or
+npm run dev:local
+```
+
+### 4. Run tests
+```sh
+yarn run tests
+# or
+npm run tests
+```
+
+## Test notes
+During testing, I found that sometimes the Dadjokes and Chuckjokes APIs can take a long time to respond, resulting in tests using this API failing.
+
+A pipeline was also added to ensure the functionality of the tests in the project.
