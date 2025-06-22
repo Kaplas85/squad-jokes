@@ -1,5 +1,5 @@
-const request = require("supertest");
-const app = require("../src/server");
+import app from "@/server";
+import request from "supertest";
 
 describe("Math API", () => {
   test("Calc LCM", async () => {

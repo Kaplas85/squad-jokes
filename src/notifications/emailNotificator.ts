@@ -1,5 +1,5 @@
 class EmailNotificator {
-  sendNotification(recipient, message) {
+  sendNotification(recipient: string, message: string) {
     console.group("Email Notification");
     console.log(`To: ${recipient}`);
     console.log(`Message: ${message}`);
@@ -7,4 +7,4 @@ class EmailNotificator {
   }
 }
 
-module.exports = EmailNotificator;
+export default EmailNotificator;

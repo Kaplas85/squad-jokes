@@ -1,9 +1,13 @@
-const jwt = require("jsonwebtoken");
-const externalUsers = [];
-const config = require("./../config");
-const { generateToken } = require("./auth");
+import type { ExternalUser } from "@/types/auth";
+import { generateToken } from "./auth";
 
-function addExternalUser({ name, email, profile }) {
+const externalUsers: ExternalUser[] = [];
+
+function addExternalUser({
+  name,
+  email,
+  profile,
+}: Pick<ExternalUser, "name" | "email"> & { profile: any }) {
   let user = externalUsers.find((u) => u.email === email);
   if (!user) {
     user = {
@@ -21,15 +25,15 @@ function addExternalUser({ name, email, profile }) {
   return user;
 }
 
-function getExternalUser(profileId) {
+function getExternalUser(profileId: string) {
   const user = externalUsers.find((u) => u.federated.profile === profileId);
 
   if (!user) {
     return null;
   }
 
-  const token = generateToken(user);
+  const token = generateToken(user as ExternalUser);
   return token;
 }
 
-module.exports = { addExternalUser, getExternalUser, externalUsers };
+export { addExternalUser, getExternalUser };

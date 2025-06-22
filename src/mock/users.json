@@ -1,11 +1,13 @@
 [
   {
+    "id": 1,
     "name": "Usuario Normal",
     "email": "user@example.com",
     "role": "user",
     "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f"
   },
   {
+    "id": 2,
     "name": "Administrador",
     "email": "admin@example.com",
     "role": "admin",

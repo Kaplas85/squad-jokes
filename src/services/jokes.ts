@@ -1,9 +1,9 @@
-const db = require("./../db");
-const { jokesTable } = require("./../db/schema");
-const axios = require("axios");
-const { eq } = require("drizzle-orm");
+import db from "@/db";
+import { jokesTable } from "@/db/schema";
+import axios from "axios";
+import { eq } from "drizzle-orm";
 
-async function fetchJoke(type) {
+async function fetchJoke(type?: "chuck" | "dad") {
   if (!type) {
     type = Math.random() < 0.5 ? "chuck" : "dad";
   }
@@ -30,11 +30,11 @@ async function fetchJoke(type) {
   throw err;
 }
 
-async function saveJoke(text) {
+async function saveJoke(text: string) {
   return await db.insert(jokesTable).values({ text }).returning();
 }
 
-async function updateJoke(id, text) {
+async function updateJoke(id: number, text: string) {
   return await db
     .update(jokesTable)
     .set({ text })
@@ -42,13 +42,8 @@ async function updateJoke(id, text) {
     .returning();
 }
 
-async function deleteJoke(id) {
+async function deleteJoke(id: number) {
   return await db.delete(jokesTable).where(eq(jokesTable.id, id)).returning();
 }
 
-module.exports = {
-  fetchJoke,
-  saveJoke,
-  updateJoke,
-  deleteJoke,
-};
+export { deleteJoke, fetchJoke, saveJoke, updateJoke };

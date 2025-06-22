@@ -1,8 +1,10 @@
-const EmailNotificator = require("../notifications/emailNotificator");
-const SmsNotificator = require("../notifications/smsNotificator");
-const config = require("../config");
+import config from "@/config";
+import EmailNotificator from "./emailNotificator";
+import SmsNotificator from "./smsNotificator";
 
 class INotificator {
+  notificator!: EmailNotificator | SmsNotificator;
+
   constructor() {
     if (config.notifier_method === "email") {
       this.notificator = new EmailNotificator();
@@ -12,7 +14,7 @@ class INotificator {
     }
   }
 
-  sendAlert(recipient, message) {
+  sendAlert(recipient: string, message: string) {
     if (!recipient || !message) {
       throw new Error("Recipient and message are required");
     }
@@ -21,4 +23,4 @@ class INotificator {
   }
 }
 
-module.exports = INotificator;
+export default INotificator;

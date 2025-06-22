@@ -1,7 +1,7 @@
-const request = require("supertest");
-const app = require("../src/server");
-const db = require("./../src/db");
-const { jokesTable } = require("../src/db/schema");
+import db from "@/db";
+import { jokesTable } from "@/db/schema";
+import app from "@/server";
+import request from "supertest";
 
 beforeAll(async () => {
   await db.delete(jokesTable);

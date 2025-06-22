@@ -1,6 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
 
-async function fetchChuckJokes(n = 5) {
+async function fetchChuckJokes(n: number = 5) {
   const requests = Array.from({ length: n }, () =>
     axios
       .get("https://api.chucknorris.io/jokes/random")
@@ -20,7 +20,7 @@ async function fetchDadJokes(n = 5) {
   return Promise.all(requests);
 }
 
-function pairJokes(chuckJokes, dadJokes) {
+function pairJokes(chuckJokes: string[], dadJokes: string[]) {
   const minLen = Math.min(chuckJokes.length, dadJokes.length);
   const pairs = [];
   for (let i = 0; i < minLen; i++) {
@@ -42,15 +42,10 @@ async function getPairedJokes() {
     ]);
     console.log("Fetched jokes. Pairing...");
     return pairJokes(chuckJokes, dadJokes);
-  } catch (err) {
+  } catch (err: any) {
     console.error("Error fetching paired jokes:", err.message);
     throw new Error("Failed to fetch paired jokes");
   }
 }
 
-module.exports = {
-  fetchChuckJokes,
-  fetchDadJokes,
-  pairJokes,
-  getPairedJokes,
-};
+export { getPairedJokes };

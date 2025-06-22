@@ -1,23 +1,20 @@
-function gcd(a, b) {
+function gcd(a: number, b: number): number {
   return b === 0 ? a : gcd(b, a % b);
 }
 
-function lcmTwo(a, b) {
+function lcmTwo(a: number, b: number) {
   return Math.abs(a * b) / gcd(a, b);
 }
 
-function computeLCM(numbers) {
+function computeLCM(numbers: number[]) {
   if (!Array.isArray(numbers) || numbers.length === 0) {
     throw new Error("Se requiere un array no vacío de números");
   }
   return numbers.reduce((acc, n) => lcmTwo(acc, n));
 }
 
-function increment(n) {
+function increment(n: number) {
   return n + 1;
 }
 
-module.exports = {
-  computeLCM,
-  increment,
-};
+export { computeLCM, increment };

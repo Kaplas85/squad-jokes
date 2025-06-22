@@ -1,9 +1,10 @@
-const jwt = require("jsonwebtoken");
-const users = require("./../mock/users.json");
-const config = require("./../config");
-const { verifyPassword } = require("../utils/hash");
+import config from "@/config";
+import users from "@/mock/users.json";
+import { ExternalUser, LocalUser } from "@/types/auth";
+import { verifyPassword } from "@/utils/hash";
+import jwt from "jsonwebtoken";
 
-function generateToken(user) {
+function generateToken(user: ExternalUser | LocalUser) {
   const payload = {
     name: user.name,
     email: user.email,
@@ -15,7 +16,7 @@ function generateToken(user) {
   });
 }
 
-function login(email, password) {
+function login(email: string, password: string) {
   const user = users.find((u) => u.email === email);
 
   if (!user) {
@@ -32,7 +33,7 @@ function login(email, password) {
     };
   }
 
-  const token = generateToken(user);
+  const token = generateToken(user as LocalUser);
 
   return {
     result: "success",
@@ -40,7 +41,4 @@ function login(email, password) {
   };
 }
 
-module.exports = {
-  login,
-  generateToken,
-};
+export { generateToken, login };

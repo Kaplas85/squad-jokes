@@ -1,11 +1,13 @@
-const router = require("express").Router();
-const {
-  getJokesFromExternal,
+import {
   createNewJoke,
-  updateSingleJoke,
   deleteSingleJoke,
-} = require("../controllers/jokes");
-const { getPairedJokesController } = require("../controllers/pairedJokes");
+  getJokesFromExternal,
+  updateSingleJoke,
+} from "@controllers/jokes";
+import { getPairedJokesController } from "@controllers/pairedJokes";
+import { Router } from "express";
+
+const router = Router();
 
 router.get("/", getJokesFromExternal);
 router.post("/", createNewJoke);
@@ -13,4 +15,4 @@ router.put("/:id", updateSingleJoke);
 router.delete("/:id", deleteSingleJoke);
 router.get("/emparejados", getPairedJokesController);
 
-module.exports = router;
+export default router;

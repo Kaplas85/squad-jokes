@@ -1,6 +1,6 @@
-const request = require("supertest");
-const app = require("../src/server");
-const { login } = require("../src/services/auth");
+import app from "@/server";
+import { login } from "@/services/auth";
+import request from "supertest";
 
 describe("Auth Tests", () => {
   test("Login with valid credentials", async () => {
@@ -36,6 +36,7 @@ describe("Auth Tests", () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty("message");
+    expect(res.body.message).toBe("Hola, Usuario Normal!");
   });
 
   test("Access protected route as admin", async () => {

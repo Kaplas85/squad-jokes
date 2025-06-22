@@ -1,8 +1,8 @@
-const request = require("supertest");
-const app = require("../src/server");
-const config = require("../src/config");
-const EmailNotificator = require("../src/notifications/emailNotificator");
-const SmsNotificator = require("../src/notifications/smsNotificator");
+import config from "@/config";
+import EmailNotificator from "@/notifications/emailNotificator";
+import SmsNotificator from "@/notifications/smsNotificator";
+import app from "@/server";
+import request from "supertest";
 
 describe("notifications", () => {
   test("should send email notification", async () => {
